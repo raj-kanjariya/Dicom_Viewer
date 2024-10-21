@@ -1,4 +1,4 @@
-import '@kitware/vtk.js/Rendering/Profiles/Geometry';
+/*import '@kitware/vtk.js/Rendering/Profiles/Geometry';
 
 import vtkFullScreenRenderWindow from '@kitware/vtk.js/Rendering/Misc/FullScreenRenderWindow';
 
@@ -102,11 +102,11 @@ resolutionChange.addEventListener('input', (e) => {
   coneSource.setResolution(resolution);
   renderWindow.render();
 });
+*/
 
+/*
 
-
-
-/*import '@kitware/vtk.js/Rendering/Profiles/Geometry';
+import '@kitware/vtk.js/Rendering/Profiles/Geometry';
 
 import vtkGenericRenderWindow from '@kitware/vtk.js/Rendering/Misc/GenericRenderWindow';
 
@@ -139,7 +139,7 @@ const mapper = vtkMapper.newInstance();
 const coneSource = vtkConeSource.newInstance({
   height: 10.0, radius: 5.0,
 });
- const filter = vtkOutlineFilter.newInstance();
+const filter = vtkOutlineFilter.newInstance();
 
 
 // the mapper reads in the cone polydata

@@ -17,6 +17,7 @@ import vtkInteractorStyleTrackballCamera from '@kitware/vtk.js/Interaction/Style
 import vtkMapper from '@kitware/vtk.js/Rendering/Core/Mapper';
 import vtkOrientationMarkerWidget from '@kitware/vtk.js/Interaction/Widgets/OrientationMarkerWidget';
 import vtkResliceCursorWidget from '@kitware/vtk.js/Widgets/Widgets3D/ResliceCursorWidget';
+import widgetBehavior from '@kitware/vtk.js/Widgets/Widgets3D/ResliceCursorWidget/behavior';
 import vtkWidgetManager from '@kitware/vtk.js/Widgets/Core/WidgetManager';
 
 import vtkResourceLoader from '@kitware/vtk.js/IO/Core/ResourceLoader';
@@ -55,14 +56,14 @@ const widget = vtkResliceCursorWidget.newInstance();
 const widgetState = widget.getWidgetState();
 // Set size in CSS pixel space because scaleInPixels defaults to true
 widgetState.getStatesWithLabel('sphere').forEach((handle) => handle.setScale1(20));
-const showDebugActors = true;
+// const showDebugActors = true;
 
-const appCursorStyles = {
-  translateCenter: 'move',
-  rotateLine: 'alias',
-  translateAxis: 'pointer',
-  default: 'default',
-};
+// const appCursorStyles = {
+//   translateCenter: 'move',
+//   rotateLine: 'alias',
+//   translateAxis: 'pointer',
+//   default: 'default',
+// };
 
 // ----------------------------------------------------------------------------
 // Define html structure
@@ -232,17 +233,14 @@ for (let i = 0; i < 4; i++) {
 function stlLoader(renderer, rendererwindow) {
   const mapper = vtkMapper.newInstance({ scalarVisibility: false });
   const actor = vtkActor.newInstance();
+  // console.log(actor);
   actor.setMapper(mapper);
   mapper.setInputConnection(stlReader.getOutputPort());
 
   function update() {
-
-    const resetCamera = renderer.resetCamera;
-    const render = rendererwindow.render;
-
     renderer.addActor(actor);
-    resetCamera();
-    render();
+    renderer.resetCamera();
+    rendererwindow.render();
   }
 
   const fileInput = document.querySelector('#getStlFileDetails');
@@ -288,6 +286,8 @@ function updateReslice(
     const resliceAxes = interactionContext.reslice.getResliceAxes();
     // Get returned modified from setter to know if we have to render
     interactionContext.actor.setUserMatrix(resliceAxes);
+    // console.log("interaction", interactionContext.reslice);
+    console.log(interactionContext.actor.pick());
     // const planeSource = widget.getPlaneSource(interactionContext.viewType);
     // interactionContext.sphereSources[0].setCenter(planeSource.getOrigin());
     // interactionContext.sphereSources[1].setCenter(planeSource.getPoint1());
@@ -519,4 +519,9 @@ checkboxWindowLevel.addEventListener('change', (ev) => {
     }
   });
 
+});
+
+document.querySelector(`.view0`).addEventListener(`click`, (e) => {
+  const box = document.querySelector(`.view0`).getBoundingClientRect();
+  console.log(box);
 });
